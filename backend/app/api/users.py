@@ -22,17 +22,18 @@ def login(
     db: Session = Depends(get_db)
 ):
 
-    logged_in_user = login_user_service(
-        db,
-        user.email,
-        user.password
-    )
+    token = login_user_service(
+    db,
+    user.email,
+    user.password
+)
 
-    if logged_in_user is None:
+    if token is None:
         return {
             "message": "Invalid email or password"
         }
 
     return {
-        "message": "Login successful"
+        "access_token": token,
+        "token_type": "bearer"
     }

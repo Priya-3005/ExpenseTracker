@@ -1,8 +1,11 @@
+import token
+
 from sqlalchemy.orm import Session
 
 from app.repositories.user_repository import create_user,get_user_by_email
 from app.schemas.user import UserCreate
 from app.core.security import hash_password,verify_password
+from app.core.auth import create_access_token
 
 
 def create_user_service(
@@ -31,4 +34,6 @@ def login_user_service(
     ):
         return None
 
-    return user
+    token = create_access_token({"sub": user.email})
+
+    return token

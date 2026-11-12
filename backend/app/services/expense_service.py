@@ -6,9 +6,9 @@ from app.schemas.expense import ExpenseCreate
 
 def create_expense_service(
     db: Session,
-    expense: ExpenseCreate
+    expense: ExpenseCreate,user_id: int
 ):
-    return create_expense(db, expense)
+    return create_expense(db, expense,user_id)
 def get_all_expenses_service(db: Session):
     return get_all_expenses(db)
 def get_expense_by_id_service(

@@ -4,12 +4,13 @@ from app.models.expense import Expense
 from app.schemas.expense import ExpenseCreate, ExpenseUpdate
 
 
-def create_expense(db: Session, expense: ExpenseCreate):
+def create_expense(db: Session, expense: ExpenseCreate,user_id: int):
 
     new_expense = Expense(
         title=expense.title,
         amount=expense.amount,
-        category=expense.category
+        category=expense.category,
+        user_id=user_id
     )
 
     db.add(new_expense)

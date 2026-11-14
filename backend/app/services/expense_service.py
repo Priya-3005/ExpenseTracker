@@ -9,13 +9,13 @@ def create_expense_service(
     expense: ExpenseCreate,user_id: int
 ):
     return create_expense(db, expense,user_id)
-def get_all_expenses_service(db: Session):
-    return get_all_expenses(db)
+def get_all_expenses_service(db: Session,user_id: int):
+    return get_all_expenses(db,user_id)
 def get_expense_by_id_service(
     db: Session,
-    expense_id: int
+    expense_id: int,user_id: int
 ):
-    return get_expense_by_id(db, expense_id)
+    return get_expense_by_id(db, expense_id,user_id)
 def update_expense_service(
     db: Session,
     expense,

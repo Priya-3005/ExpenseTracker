@@ -19,14 +19,14 @@ def create_expense(expense: ExpenseCreate, db: Session = Depends(get_db),current
 
     return new_expense
 @router.get("/", response_model=list[ExpenseResponse])
-def get_all_expenses(db: Session = Depends(get_db)):
+def get_all_expenses(db: Session = Depends(get_db),current_user: User = Depends(get_current_user)):
 
-    return get_all_expenses_service(db)
+    return get_all_expenses_service(db,current_user.id)
 
 @router.get("/{expense_id}", response_model=ExpenseResponse)
-def get_expense(expense_id: int, db: Session = Depends(get_db)):
+def get_expense(expense_id: int, db: Session = Depends(get_db),current_user: User = Depends(get_current_user)):
 
-    expense = get_expense_by_id_service(db, expense_id)
+    expense = get_expense_by_id_service(db, expense_id,current_user.id)
     if expense is None:
         raise HTTPException(
         status_code=status.HTTP_404_NOT_FOUND,
@@ -39,10 +39,10 @@ def get_expense(expense_id: int, db: Session = Depends(get_db)):
 def update_expense(
     expense_id: int,
     updated_expense: ExpenseUpdate,
-    db: Session = Depends(get_db)
+    db: Session = Depends(get_db),current_user: User = Depends(get_current_user)
 ):
 
-    expense = get_expense_by_id_service(db, expense_id)
+    expense = get_expense_by_id_service(db, expense_id,current_user.id)
     if expense is None:
         raise HTTPException(
         status_code=status.HTTP_404_NOT_FOUND,
@@ -56,9 +56,9 @@ def update_expense(
         "message": "Expense updated successfully"
     }
 @router.delete("/{expense_id}")
-def delete_expense(expense_id: int, db: Session = Depends(get_db)):
+def delete_expense(expense_id: int, db: Session = Depends(get_db),current_user: User = Depends(get_current_user)):
 
-    expense = get_expense_by_id_service(db, expense_id)
+    expense = get_expense_by_id_service(db, expense_id,current_user.id)
 
     if expense is None:
         raise HTTPException(

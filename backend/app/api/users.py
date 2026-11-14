@@ -6,6 +6,7 @@ from app.db.database import get_db
 from app.schemas.user import UserCreate,UserResponse,UserLogin
 from app.services.user_service import create_user_service,login_user_service
 from app.core.auth import get_current_user
+from app.exceptions.custom_exceptions import InvalidCredentialsException
 
 router = APIRouter(prefix="/users", tags=["Users"])
 
@@ -31,9 +32,7 @@ def login(
 )
 
     if token is None:
-        return {
-            "message": "Invalid email or password"
-        }
+        raise InvalidCredentialsException()
 
     return {
         "access_token": token,

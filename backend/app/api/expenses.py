@@ -7,6 +7,7 @@ from app.schemas.expense import ExpenseCreate, ExpenseUpdate, ExpenseResponse
 from app.services.expense_service import create_expense_service, get_all_expenses_service, get_expense_by_id_service, update_expense_service, delete_expense_service
 from app.models.user import User
 from app.core.auth import get_current_user
+from app.exceptions.custom_exceptions import ExpenseNotFoundException   
 
 router = APIRouter(prefix="/expenses", tags=["Expenses"])
 
@@ -28,10 +29,8 @@ def get_expense(expense_id: int, db: Session = Depends(get_db),current_user: Use
 
     expense = get_expense_by_id_service(db, expense_id,current_user.id)
     if expense is None:
-        raise HTTPException(
-        status_code=status.HTTP_404_NOT_FOUND,
-        detail="Expense not found"
-    )
+        raise ExpenseNotFoundException(expense_id)
+
 
     return expense
 
